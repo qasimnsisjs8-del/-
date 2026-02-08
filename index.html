@@ -3,159 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diamond Tools | qrg7_</title>
+    <title>Diamond VIP | qrg7_</title>
     <style>
         :root {
-            --diamond-gradient: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
-            --glass: rgba(255, 255, 255, 0.2);
+            --bg-dark: #0f0c29;
+            --card-bg: rgba(255, 255, 255, 0.07);
             --accent: #00d2ff;
-            --insta-pink: #dd2a7b;
+            --insta: #e1306c;
         }
 
         body {
             margin: 0; padding: 0;
-            background: #0f0c29; /* خلفية ليلية لإبراز الألماس */
-            background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
+            background: linear-gradient(to bottom, #24243e, #141e30);
             font-family: 'Segoe UI', sans-serif;
             color: white;
-            display: flex; justify-content: center; min-height: 100vh;
+            min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
         }
 
-        .container {
+        .mobile-frame {
             width: 100%; max-width: 420px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative; overflow-y: auto;
+            min-height: 100vh;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,210,255,0.1);
         }
 
-        /* --- واجهة الدخول الماسية 3D --- */
-        #login-screen {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; text-align: center; padding: 20px;
+        /* --- الشاشات (Pages) --- */
+        .page {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            transition: 0.5s; padding: 20px; box-sizing: border-box;
+            z-index: 10;
         }
 
-        .diamond-shape {
-            width: 80px; height: 80px;
-            background: var(--diamond-gradient);
-            transform: rotate(45deg);
-            box-shadow: 0 0 30px var(--accent);
-            margin-bottom: 40px;
-            animation: float 3s ease-in-out infinite;
-            display: flex; align-items: center; justify-content: center;
+        /* شاشة الباسوورد */
+        #page-password { z-index: 30; background: #0f0c29; }
+        
+        /* شاشة الاشتراك الإجباري */
+        #page-sub { 
+            z-index: 20; background: rgba(15, 12, 41, 0.95);
+            display: none; /* مخفية في البداية */
         }
 
-        .diamond-shape i { transform: rotate(-45deg); font-size: 30px; }
-
-        @keyframes float {
-            0%, 100% { transform: rotate(45deg) translateY(0); }
-            50% { transform: rotate(45deg) translateY(-20px); }
+        /* المحتوى الرئيسي */
+        #page-content { 
+            display: none; 
+            justify-content: flex-start; 
+            padding-top: 20px; 
+            overflow-y: auto; 
+            background: #141e30;
         }
 
-        .login-card {
-            background: var(--glass);
-            padding: 30px; border-radius: 20px; width: 85%;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.2);
-            transform: perspective(1000px) rotateX(5deg);
+        /* --- العناصر الجمالية --- */
+        .diamond-icon {
+            font-size: 50px; margin-bottom: 20px;
+            animation: float 3s infinite ease-in-out;
+            text-shadow: 0 0 20px var(--accent);
         }
+
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-15px)} }
 
         input {
-            width: 100%; padding: 12px; margin: 10px 0;
-            border-radius: 10px; border: none; outline: none;
-            background: rgba(255,255,255,0.9); text-align: center;
-            font-weight: bold; box-sizing: border-box;
+            background: rgba(255,255,255,0.1); border: 1px solid var(--accent);
+            padding: 12px; color: white; text-align: center; border-radius: 8px;
+            width: 80%; outline: none; margin-bottom: 15px;
         }
 
-        .btn-entry {
-            width: 100%; padding: 12px; margin-top: 15px;
-            background: var(--diamond-gradient);
-            border: none; border-radius: 10px; font-weight: bold;
-            color: #302b63; cursor: pointer; transition: 0.3s;
+        .btn {
+            background: var(--accent); color: #000;
+            padding: 12px 30px; border: none; border-radius: 8px;
+            font-weight: bold; cursor: pointer; width: 80%;
+            transition: 0.3s;
+        }
+        
+        /* زر الاشتراك */
+        .btn-insta {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white; margin-bottom: 15px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
 
-        /* --- المحتوى الرئيسي --- */
-        #main-app { display: none; padding: 20px; }
-
-        .header-box { text-align: center; padding: 20px; }
-        .follow-btn {
-            background: var(--insta-pink); color: white;
-            padding: 8px 20px; border-radius: 20px; text-decoration: none;
-            font-size: 14px; font-weight: bold; display: inline-block; margin-top: 10px;
+        /* زر التحقق المغلق */
+        .btn-locked {
+            background: #555; color: #999; cursor: not-allowed;
         }
 
-        /* قسم الملاحظات */
-        .note-card {
-            background: rgba(0, 210, 255, 0.1);
-            border-right: 4px solid var(--accent);
-            padding: 15px; margin: 20px 0; border-radius: 5px;
-            font-size: 13px; line-height: 1.6;
+        /* بطاقات الروابط */
+        .link-card {
+            background: var(--card-bg);
+            width: 100%; padding: 15px; margin-bottom: 10px;
+            border-radius: 10px; border-left: 3px solid var(--accent);
+            text-decoration: none; color: white; display: flex; justify-content: space-between;
+            transition: 0.3s;
+        }
+        .link-card:hover { background: rgba(0, 210, 255, 0.15); transform: translateX(-5px); }
+
+        .note-box {
+            background: rgba(255, 20, 20, 0.1);
+            border: 1px solid rgba(255, 20, 20, 0.3);
+            padding: 10px; border-radius: 8px; font-size: 12px;
+            margin-bottom: 20px; line-height: 1.5;
         }
 
-        /* الروابط الـ 15 */
-        .links-grid { display: grid; gap: 12px; }
-        .link-3d {
-            background: rgba(255,255,255,0.08);
-            padding: 18px; border-radius: 15px;
-            text-decoration: none; color: white;
-            display: flex; justify-content: space-between;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: 0.3s; position: relative; overflow: hidden;
+        /* رسالة الخطأ */
+        .error { color: #ff4b2b; font-size: 12px; margin-top: 10px; display: none; }
+
+        /* دائرة البروفايل */
+        .profile-img {
+            width: 80px; height: 80px; border-radius: 50%;
+            border: 3px solid var(--accent); margin-bottom: 15px;
+            background: #333; /* ضع صورتك هنا */
+            background-image: url('https://cdn-icons-png.flaticon.com/512/3135/3135715.png');
+            background-size: cover;
         }
 
-        .link-3d:hover {
-            transform: scale(1.03); background: rgba(255,255,255,0.15);
-            border-color: var(--accent);
-        }
-
-        .link-3d::before {
-            content: ''; position: absolute; top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            transition: 0.5s;
-        }
-
-        .footer { text-align: center; padding: 30px; font-size: 12px; opacity: 0.6; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div id="login-screen">
-        <div class="diamond-shape">💎</div>
-        <div class="login-card">
-            <h2 style="margin-top:0">الوصول الماسي</h2>
-            <p style="font-size: 12px; opacity: 0.8;">بواسطة qrg7_</p>
-            <input type="password" id="pass" placeholder="كلمة المرور">
-            <button class="btn-entry" onclick="unlock()">دخول الآدمن</button>
-            <p id="err" style="color:#ff4b2b; font-size:11px; display:none; margin-top:10px">الرمز خاطئ يا بطل!</p>
-        </div>
+<div class="mobile-frame">
+
+    <div id="page-password" class="page">
+        <div class="diamond-icon">💎</div>
+        <h2>بوابة المطورين</h2>
+        <p style="font-size:12px; color:#aaa; margin-bottom:20px;">أدخل الرمز السري للوصول</p>
+        <input type="password" id="passInput" placeholder="Password">
+        <button class="btn" onclick="checkPass()">تحقق</button>
+        <div id="passError" class="error">الرمز غير صحيح!</div>
     </div>
 
-    <div id="main-app">
-        <div class="header-box">
-            <h1 style="font-size: 24px; color: var(--accent);">Diamond Panel</h1>
-            <a href="https://instagram.com/qrg7_" class="follow-btn" target="_blank">تابع حسابي qrg7_ لتعمل الأداة</a>
+    <div id="page-sub" class="page">
+        <div class="profile-img"></div>
+        <h3 style="margin:0 0 10px 0">@qrg7_</h3>
+        <p style="font-size:13px; color:#ccc; text-align:center; margin-bottom:20px;">
+            ⚠️ <b>تنبيه أمني:</b><br>
+            لن تفتح الأداة حتى يتم التحقق من متابعة الحساب المطور.
+        </p>
+        
+        <button class="btn btn-insta" onclick="openInsta()">
+            <span>تابِع الحساب الآن</span>
+            <span>↗</span>
+        </button>
+
+        <button id="checkSubBtn" class="btn btn-locked" onclick="finishSub()" disabled>
+            جاري انتظار المتابعة...
+        </button>
+    </div>
+
+    <div id="page-content" class="page">
+        <div style="width:100%; text-align:center; margin-bottom:15px;">
+            <h3 style="color:var(--accent); margin:0;">لوحة التحكم </h3>
+            <small style="color:#aaa;">By: qrg7_</small>
         </div>
 
-        <div class="note-card">
-            <strong style="color: var(--accent); display: block; margin-bottom: 5px;">⚠️ ملاحظات الأمان والاستخدام:</strong>
-            1. اعمل <b>حساب وهمي</b> (اسم مستخدم + باسورد) واستخدمه للتسجيل داخل المواقع.<br>
-            2. داخل الموقع، سيطلب منك "يوزر الرشق"، عندها ضع <b>يوزرك الأصلي</b>.<br>
-            3. <b>مهم جداً:</b> ادخل إعدادات حسابك الانستا > قسم "متابعة الأصدقاء ودعوتهم" > <b>أطفئ الخيار</b> لضمان وصول الرشق.<br>
-            <p style="margin-top:10px; font-size:11px; color:#ccc;">* تم إعداد الموقع بواسطة <b>qrg7_</b></p>
+        <div class="note-box">
+            <b>⛔ تعليمات هامة جداً:</b><br>
+            1. سجل دخول في المواقع بـ <b>حساب وهمي</b> (يوزر + باسوورد).<br>
+            2. عند طلب الرشق، ضع <b>يوزرك الأصلي</b>.<br>
+            3. <b>للأمان:</b> اذهب لإعدادات حسابك > "متابعة الأصدقاء ودعوتهم" > أطفئ الخيار.
         </div>
 
-        <div class="links-grid" id="linksBody">
+        <div id="links-container" style="width:100%">
             </div>
 
-        <div class="footer">
-            جميع الحقوق محفوظة لـ qrg7_ © 2026
+        <div style="margin-top:20px; font-size:10px; color:#666; text-align:center;">
+            All Rights Reserved © 2026
         </div>
     </div>
+
 </div>
 
 <script>
+    // قائمة المواقع
     const sites = [
         "https://birtakipci.com/tools", "https://takipcigir.com/tools", "https://fastfollow.in/tools",
         "https://takipcikrali.com/login", "https://instamoda.org/tools", "https://hepsitakipci.com/tools",
@@ -165,24 +188,56 @@
         "https://medyahizmeti.com/"
     ];
 
-    const grid = document.getElementById('linksBody');
-    sites.forEach((url, index) => {
-        grid.innerHTML += `
-            <a href="${url}" class="link-3d" target="_blank">
-                <span>💎 سيرفر الرشق ${index + 1}</span>
-                <span style="color:var(--accent)">←</span>
+    // تعبئة الروابط
+    const container = document.getElementById('links-container');
+    sites.forEach((site, index) => {
+        container.innerHTML += `
+            <a href="${site}" target="_blank" class="link-card">
+                <span>⚡ سيرفر ${index + 1}</span>
+                <span>دخول</span>
             </a>
         `;
     });
 
-    function unlock() {
-        const p = document.getElementById('pass').value;
+    // 1. التحقق من الباسوورد
+    function checkPass() {
+        const p = document.getElementById('passInput').value;
         if(p === '201919') {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-app').style.display = 'block';
+            document.getElementById('page-password').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('page-password').style.display = 'none';
+                document.getElementById('page-sub').style.display = 'flex'; // إظهار صفحة الاشتراك
+            }, 500);
         } else {
-            document.getElementById('err').style.display = 'block';
+            document.getElementById('passError').style.display = 'block';
         }
+    }
+
+    // 2. فتح الانستا وتفعيل الزر
+    function openInsta() {
+        // فتح حسابك
+        window.open('https://instagram.com/qrg7_', '_blank');
+        
+        const btn = document.getElementById('checkSubBtn');
+        btn.innerText = "جاري التحقق...";
+        
+        // خداع: انتظار 3 ثواني ثم تفعيل الزر
+        setTimeout(() => {
+            btn.classList.remove('btn-locked');
+            btn.style.background = '#28a745'; // لون أخضر
+            btn.style.color = '#fff';
+            btn.innerText = "تم التحقق! اضغط للدخول";
+            btn.disabled = false;
+        }, 3000);
+    }
+
+    // 3. الدخول النهائي
+    function finishSub() {
+        document.getElementById('page-sub').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('page-sub').style.display = 'none';
+            document.getElementById('page-content').style.display = 'flex';
+        }, 500);
     }
 </script>
 

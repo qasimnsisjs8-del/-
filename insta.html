@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamond Tools | qrg7_</title>
+    <style>
+        :root {
+            --diamond-gradient: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            --glass: rgba(255, 255, 255, 0.2);
+            --accent: #00d2ff;
+            --insta-pink: #dd2a7b;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background: #0f0c29; /* خلفية ليلية لإبراز الألماس */
+            background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            display: flex; justify-content: center; min-height: 100vh;
+        }
+
+        .container {
+            width: 100%; max-width: 420px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative; overflow-y: auto;
+        }
+
+        /* --- واجهة الدخول الماسية 3D --- */
+        #login-screen {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; text-align: center; padding: 20px;
+        }
+
+        .diamond-shape {
+            width: 80px; height: 80px;
+            background: var(--diamond-gradient);
+            transform: rotate(45deg);
+            box-shadow: 0 0 30px var(--accent);
+            margin-bottom: 40px;
+            animation: float 3s ease-in-out infinite;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .diamond-shape i { transform: rotate(-45deg); font-size: 30px; }
+
+        @keyframes float {
+            0%, 100% { transform: rotate(45deg) translateY(0); }
+            50% { transform: rotate(45deg) translateY(-20px); }
+        }
+
+        .login-card {
+            background: var(--glass);
+            padding: 30px; border-radius: 20px; width: 85%;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            transform: perspective(1000px) rotateX(5deg);
+        }
+
+        input {
+            width: 100%; padding: 12px; margin: 10px 0;
+            border-radius: 10px; border: none; outline: none;
+            background: rgba(255,255,255,0.9); text-align: center;
+            font-weight: bold; box-sizing: border-box;
+        }
+
+        .btn-entry {
+            width: 100%; padding: 12px; margin-top: 15px;
+            background: var(--diamond-gradient);
+            border: none; border-radius: 10px; font-weight: bold;
+            color: #302b63; cursor: pointer; transition: 0.3s;
+        }
+
+        /* --- المحتوى الرئيسي --- */
+        #main-app { display: none; padding: 20px; }
+
+        .header-box { text-align: center; padding: 20px; }
+        .follow-btn {
+            background: var(--insta-pink); color: white;
+            padding: 8px 20px; border-radius: 20px; text-decoration: none;
+            font-size: 14px; font-weight: bold; display: inline-block; margin-top: 10px;
+        }
+
+        /* قسم الملاحظات */
+        .note-card {
+            background: rgba(0, 210, 255, 0.1);
+            border-right: 4px solid var(--accent);
+            padding: 15px; margin: 20px 0; border-radius: 5px;
+            font-size: 13px; line-height: 1.6;
+        }
+
+        /* الروابط الـ 15 */
+        .links-grid { display: grid; gap: 12px; }
+        .link-3d {
+            background: rgba(255,255,255,0.08);
+            padding: 18px; border-radius: 15px;
+            text-decoration: none; color: white;
+            display: flex; justify-content: space-between;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s; position: relative; overflow: hidden;
+        }
+
+        .link-3d:hover {
+            transform: scale(1.03); background: rgba(255,255,255,0.15);
+            border-color: var(--accent);
+        }
+
+        .link-3d::before {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transition: 0.5s;
+        }
+
+        .footer { text-align: center; padding: 30px; font-size: 12px; opacity: 0.6; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="login-screen">
+        <div class="diamond-shape">💎</div>
+        <div class="login-card">
+            <h2 style="margin-top:0">الوصول الماسي</h2>
+            <p style="font-size: 12px; opacity: 0.8;">بواسطة qrg7_</p>
+            <input type="password" id="pass" placeholder="كلمة المرور">
+            <button class="btn-entry" onclick="unlock()">دخول الآدمن</button>
+            <p id="err" style="color:#ff4b2b; font-size:11px; display:none; margin-top:10px">الرمز خاطئ يا بطل!</p>
+        </div>
+    </div>
+
+    <div id="main-app">
+        <div class="header-box">
+            <h1 style="font-size: 24px; color: var(--accent);">Diamond Panel</h1>
+            <a href="https://instagram.com/qrg7_" class="follow-btn" target="_blank">تابع حسابي qrg7_ لتعمل الأداة</a>
+        </div>
+
+        <div class="note-card">
+            <strong style="color: var(--accent); display: block; margin-bottom: 5px;">⚠️ ملاحظات الأمان والاستخدام:</strong>
+            1. اعمل <b>حساب وهمي</b> (اسم مستخدم + باسورد) واستخدمه للتسجيل داخل المواقع.<br>
+            2. داخل الموقع، سيطلب منك "يوزر الرشق"، عندها ضع <b>يوزرك الأصلي</b>.<br>
+            3. <b>مهم جداً:</b> ادخل إعدادات حسابك الانستا > قسم "متابعة الأصدقاء ودعوتهم" > <b>أطفئ الخيار</b> لضمان وصول الرشق.<br>
+            <p style="margin-top:10px; font-size:11px; color:#ccc;">* تم إعداد الموقع بواسطة <b>qrg7_</b></p>
+        </div>
+
+        <div class="links-grid" id="linksBody">
+            </div>
+
+        <div class="footer">
+            جميع الحقوق محفوظة لـ qrg7_ © 2026
+        </div>
+    </div>
+</div>
+
+<script>
+    const sites = [
+        "https://birtakipci.com/tools", "https://takipcigir.com/tools", "https://fastfollow.in/tools",
+        "https://takipcikrali.com/login", "https://instamoda.org/tools", "https://hepsitakipci.com/tools",
+        "https://bigtakip.com", "https://bayitakipci.com", "https://canlitakipci.com/tools/send-follower/63237756185",
+        "https://takipcibase.com", "https://takipciking.com", "https://takipciking.net",
+        "https://takipcivar.net", "https://hepsitakipci.com/tools", "https://followersize.com/tools/send-follower",
+        "https://medyahizmeti.com/"
+    ];
+
+    const grid = document.getElementById('linksBody');
+    sites.forEach((url, index) => {
+        grid.innerHTML += `
+            <a href="${url}" class="link-3d" target="_blank">
+                <span>💎 سيرفر الرشق ${index + 1}</span>
+                <span style="color:var(--accent)">←</span>
+            </a>
+        `;
+    });
+
+    function unlock() {
+        const p = document.getElementById('pass').value;
+        if(p === '201919') {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+        } else {
+            document.getElementById('err').style.display = 'block';
+        }
+    }
+</script>
+
+</body>
+</html>
